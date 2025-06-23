@@ -6,6 +6,12 @@
 #include "GameFramework/Character.h"
 #include "DBDKillerBase.generated.h"
 
+class UCameraComponent;
+class UPointLightComponent;
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+
 UCLASS()
 class DBDSTYLE_API ADBDKillerBase : public ACharacter
 {
@@ -13,6 +19,70 @@ class DBDSTYLE_API ADBDKillerBase : public ACharacter
 
 public:
 	ADBDKillerBase();
+
+protected:
+	/** Sockets **/
+	UPROPERTY(VisibleAnywhere, Category = "Sockets")
+	FName HeadSocketName;
+
+	UPROPERTY(VisibleAnywhere, Category = "Sockets")
+	FName RightHandSocketName;
+
+
+	/** Components **/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> FirstPersonMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UCameraComponent> FirstPersonCamera;
+
+	/** Input Actions and IMC **/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> DefaultIMC;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_Move;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_Look;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_PrimaryAttack;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_SecondaryAttack;
+
+
+	/** Input Functions **/
+	void MoveInput(const FInputActionValue& InputValue);
+	void LookInput(const FInputActionValue& InputValue);
+	void PrimaryAttackInput();
+	void SecondaryAttackInput();
+		
+
+public:
+	/** Blueprint Getters **/
+	UFUNCTION(BlueprintPure, Category = "Killer|Getter", meta = (DisplayName = "Get First Person Mesh"))
+	FORCEINLINE USkeletalMeshComponent* GetFirstPersonMesh() { return FirstPersonMesh; }
+	
+	UFUNCTION(BlueprintPure, Category = "Killer|Getter", meta = (DisplayName = "Get First Person Camera"))
+	FORCEINLINE UCameraComponent* GetFirstPersonCamera() { return FirstPersonCamera; }
+
+
+	/** BlueprintCallable Input Functions **/
+	UFUNCTION(BlueprintCallable, Category = "Killer|Input", meta = (DisplayName = "Try to Move"))
+	void TryToMove(const float x, const float y);
+
+	UFUNCTION(BlueprintCallable, Category = "Killer|Input", meta = (DisplayName = "Try to Look"))
+	void TryToLook(const float x, const float y);
+
+	/* These are Implementable incase designers want to use Blueprints to create or test attacks */
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Killer|Input", meta = (DisplayName = "Primary Attack"))
+	void TryPrimaryAttack();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Killer|Input", meta = (DisplayName = "Secondary Attack"))
+	void TrySecondaryAttack();
+
 
 protected:
 	virtual void BeginPlay() override;
