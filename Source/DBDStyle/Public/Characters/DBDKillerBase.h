@@ -7,7 +7,7 @@
 #include "DBDKillerBase.generated.h"
 
 class UCameraComponent;
-class UPointLightComponent;
+class USpotLightComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -35,6 +35,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USpotLightComponent> KillerAuraLight;
+
 
 	/** Input Actions and IMC **/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")

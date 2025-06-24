@@ -3,6 +3,7 @@
 
 #include "Characters/DBDKillerBase.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -36,6 +37,9 @@ ADBDKillerBase::ADBDKillerBase()
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->SetFirstPersonPrimitiveType(EFirstPersonPrimitiveType::WorldSpaceRepresentation);
 	GetMesh()->SetCollisionProfileName("No Collision");
+
+	KillerAuraLight = CreateDefaultSubobject<USpotLightComponent>("Killer Aura Light");
+	KillerAuraLight->SetupAttachment(GetRootComponent());
 }
 
 void ADBDKillerBase::BeginPlay()

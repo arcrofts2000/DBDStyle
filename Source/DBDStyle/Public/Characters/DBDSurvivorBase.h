@@ -6,6 +6,12 @@
 #include "GameFramework/Character.h"
 #include "DBDSurvivorBase.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+
 UCLASS()
 class DBDSTYLE_API ADBDSurvivorBase : public ACharacter
 {
@@ -13,6 +19,55 @@ class DBDSTYLE_API ADBDSurvivorBase : public ACharacter
 
 public:
 	ADBDSurvivorBase();
+
+
+protected:
+	/** Sockets **/
+	UPROPERTY(VisibleAnywhere, Category = "Sockets")
+	FName RightHandSocketName;
+
+
+	/** Components **/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USpringArmComponent> SpringArmComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UCameraComponent> ThirdPersonCamera;
+
+
+	/** Input Actions and Mapping Context **/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> DefaultIMC;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_Move;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_Look;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> Input_Crouch;
+
+
+	/** Input Functions **/
+	void MoveInput(const FInputActionValue& InputValue);
+	void LookInput(const FInputActionValue& InputValue);
+	void BeginCrouchInput();
+	void EndCrouchInput();
+
+
+public:
+	/** Blueprint Getters **/
+	UFUNCTION(BlueprintPure, Category = "Survivor|Getter", meta = (DisplayName = "Get Third Person Camera"))
+	FORCEINLINE UCameraComponent* GetThirdPersonCamera() { return ThirdPersonCamera; }
+
+	/** BlueprintCallable Input Functions **/
+	UFUNCTION(BlueprintCallable, Category = "Survivor|Input", meta = (DisplayName = "Try To Move"))
+	void TryToMove(const float x, const float y);
+
+	UFUNCTION(BlueprintCallable, Category = "Survivor|Input", meta = (DisplayName = "Try To Look"))
+	void TryToLook(const float x, const float y);
+
 
 protected:
 	virtual void BeginPlay() override;
