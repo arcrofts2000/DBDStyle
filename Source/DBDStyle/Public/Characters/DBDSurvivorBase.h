@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "Characters/DBDCharacterBase.h"
 #include "DBDSurvivorBase.generated.h"
 
 class USpringArmComponent;
@@ -14,7 +14,7 @@ class UDataAsset_InputConfig;
 struct FInputActionValue;
 
 UCLASS()
-class DBDSTYLE_API ADBDSurvivorBase : public ACharacter
+class DBDSTYLE_API ADBDSurvivorBase : public ADBDCharacterBase
 {
 	GENERATED_BODY()
 
@@ -23,11 +23,6 @@ public:
 
 
 protected:
-	/** Sockets **/
-	UPROPERTY(VisibleAnywhere, Category = "Sockets")
-	FName RightHandSocketName;
-
-
 	/** Components **/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USpringArmComponent> SpringArmComp;
@@ -36,18 +31,11 @@ protected:
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
 
-	/** New Input **/
-	//@TODO: Remove old Input Actions!
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
-
-
 	/** Input Functions **/
 	void MoveInput(const FInputActionValue& InputValue);
 	void LookInput(const FInputActionValue& InputValue);
 	void BeginCrouchInput();
 	void EndCrouchInput();
-
 
 
 public:

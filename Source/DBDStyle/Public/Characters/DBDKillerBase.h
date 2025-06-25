@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "Characters/DBDCharacterBase.h"
 #include "DBDKillerBase.generated.h"
 
 class UCameraComponent;
@@ -14,7 +14,7 @@ class UDataAsset_InputConfig;
 struct FInputActionValue;
 
 UCLASS()
-class DBDSTYLE_API ADBDKillerBase : public ACharacter
+class DBDSTYLE_API ADBDKillerBase : public ADBDCharacterBase
 {
 	GENERATED_BODY()
 
@@ -22,14 +22,7 @@ public:
 	ADBDKillerBase();
 
 protected:
-	/** Sockets **/
-	UPROPERTY(VisibleAnywhere, Category = "Sockets")
-	FName HeadSocketName;
-
-	UPROPERTY(VisibleAnywhere, Category = "Sockets")
-	FName RightHandSocketName;
-
-
+	
 	/** Components **/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> FirstPersonMesh;
@@ -39,11 +32,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USpotLightComponent> KillerAuraLight;
-
-
-	/** Input Actions and IMC **/
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
 
 
 	/** Input Functions **/
