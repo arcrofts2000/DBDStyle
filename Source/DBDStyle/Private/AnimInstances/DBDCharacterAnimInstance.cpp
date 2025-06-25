@@ -23,4 +23,15 @@ void UDBDCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSecon
 
 	GroundSpeed = OwningCharacter->GetVelocity().Size2D();
 	bHasAcceleration = OwningMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;
+
+	if (bHasAcceleration)
+	{
+		IdleElapsedTime = 0.f;
+		bShouldEnterRelaxedState = false;
+	}
+	else
+	{
+		IdleElapsedTime += DeltaSeconds;
+		bShouldEnterRelaxedState = IdleElapsedTime >= EnterRelaxedStateThreshold;
+	}
 }
