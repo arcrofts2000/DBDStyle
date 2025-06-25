@@ -5,8 +5,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "Components/Input/DBDInputComponent.h"
+#include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "InputActionValue.h"
+#include "DBDGameplayTags.h"
 
 
 ADBDKillerBase::ADBDKillerBase()
@@ -68,15 +70,14 @@ void ADBDKillerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	/* If the Subsystem is fine, clear all current mappings (if any) and create a new one */
 	/* This could also be done in the Player Controller instead, though this won't have respawning so unnecessary */
 	Subsystem->ClearAllMappings();
-	Subsystem->AddMappingContext(DefaultIMC, 0);
+	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 
-	/* Cast InputComponent to Enhanced, and Bind Actions */
-	UEnhancedInputComponent* InputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	UDBDInputComponent* InputComp = CastChecked<UDBDInputComponent>(PlayerInputComponent);
 
-	InputComp->BindAction(Input_Move, ETriggerEvent::Triggered, this, &ADBDKillerBase::MoveInput);
-	InputComp->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ADBDKillerBase::LookInput);
-	InputComp->BindAction(Input_PrimaryAttack, ETriggerEvent::Started, this, &ADBDKillerBase::PrimaryAttackInput);
-	InputComp->BindAction(Input_SecondaryAttack, ETriggerEvent::Started, this, &ADBDKillerBase::SecondaryAttackInput);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ADBDKillerBase::MoveInput);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ADBDKillerBase::LookInput);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Killer_PrimaryAttack, ETriggerEvent::Started, this, &ADBDKillerBase::PrimaryAttackInput);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Killer_SecondaryAttack, ETriggerEvent::Started, this, &ADBDKillerBase::SecondaryAttackInput);
 }
 
 

@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UDataAsset_InputConfig;
 struct FInputActionValue;
 
 UCLASS()
@@ -35,18 +36,10 @@ protected:
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
 
-	/** Input Actions and Mapping Context **/
+	/** New Input **/
+	//@TODO: Remove old Input Actions!
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> DefaultIMC;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_Move;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_Look;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_Crouch;
+	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
 
 
 	/** Input Functions **/
@@ -54,6 +47,7 @@ protected:
 	void LookInput(const FInputActionValue& InputValue);
 	void BeginCrouchInput();
 	void EndCrouchInput();
+
 
 
 public:

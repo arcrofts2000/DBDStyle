@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpotLightComponent;
 class UInputMappingContext;
 class UInputAction;
+class UDataAsset_InputConfig;
 struct FInputActionValue;
 
 UCLASS()
@@ -42,19 +43,7 @@ protected:
 
 	/** Input Actions and IMC **/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> DefaultIMC;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_Move;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_Look;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_PrimaryAttack;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	TObjectPtr<UInputAction> Input_SecondaryAttack;
+	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
 
 
 	/** Input Functions **/

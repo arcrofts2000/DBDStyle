@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
+#include "InputActionValue.h"
 #include "DBDInputComponent.generated.h"
 
 /**
@@ -17,17 +18,15 @@ class DBDSTYLE_API UDBDInputComponent : public UEnhancedInputComponent
 	
 public:
 	template<class UserObject, typename CallbackFunc>
-	void BindNativeInputAction(const UDataAsset_InputConfig* InputConfig, const FGameplayTag& InTag,
-		ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func);
+	void BindNativeInputAction(const UDataAsset_InputConfig* InConfig, const FGameplayTag& InTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func);
 };
 
 template<class UserObject, typename CallbackFunc>
-void BindNativeInputAction(const UDataAsset_InputConfig* InputConfig, const FGameplayTag& InTag,
-	ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func)
+inline void UDBDInputComponent::BindNativeInputAction(const UDataAsset_InputConfig* InConfig, const FGameplayTag& InTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func)
 {
-	checkf(InputConfig, TEXT("Input Config Data Asset is null! Cannot bind Input Action."));
+	checkf(InConfig, TEXT("Input Config Data Asset is null! Cannot bind Input Action."));
 
-	if (UInputAction* FoundAction = InputConfig->FindNativeInputActionByTag(InTag))
+	if (UInputAction* FoundAction = InConfig->FindNativeInputActionByTag(InTag))
 	{
 		BindAction(FoundAction, TriggerEvent, ContextObject, Func);
 	}

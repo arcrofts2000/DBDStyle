@@ -6,12 +6,16 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "Components/Input/DBDInputComponent.h"
+#include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "InputActionValue.h"
+#include "DBDGameplayTags.h"
 
 ADBDSurvivorBase::ADBDSurvivorBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	RightHandSocketName = "righthand";
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -19,7 +23,7 @@ ADBDSurvivorBase::ADBDSurvivorBase()
 	
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("Spring Arm Comp");
 	SpringArmComp->SetupAttachment(GetRootComponent());
-	SpringArmComp->TargetArmLength = 450.f;
+	SpringArmComp->TargetArmLength = 325.f;
 	SpringArmComp->bUsePawnControlRotation = true;
 
 	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>("Third Person Camera");
@@ -47,6 +51,7 @@ void ADBDSurvivorBase::Tick(float DeltaTime)
 void ADBDSurvivorBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	checkf(InputConfigDataAsset, TEXT("You have not assigned a valid Input Config Data Asset!"));
 
 	const APlayerController* PC = GetController<APlayerController>();
 	const ULocalPlayer* LP = PC->GetLocalPlayer();
@@ -55,15 +60,11 @@ void ADBDSurvivorBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	check(Subsystem);
 
 	Subsystem->ClearAllMappings();
-	Subsystem->AddMappingContext(DefaultIMC, 0);
+	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 
-	UEnhancedInputComponent* InputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-
-	InputComp->BindAction(Input_Move, ETriggerEvent::Triggered, this, &ADBDSurvivorBase::MoveInput);
-	InputComp->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ADBDSurvivorBase::LookInput);
-	InputComp->BindAction(Input_Crouch, ETriggerEvent::Started, this, &ADBDSurvivorBase::BeginCrouchInput);
-	InputComp->BindAction(Input_Crouch, ETriggerEvent::Canceled, this, &ADBDSurvivorBase::EndCrouchInput);
-	InputComp->BindAction(Input_Crouch, ETriggerEvent::Completed, this, &ADBDSurvivorBase::EndCrouchInput);
+	UDBDInputComponent* InputComp = Cast<UDBDInputComponent>(PlayerInputComponent);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ADBDSurvivorBase::MoveInput);
+	InputComp->BindNativeInputAction(InputConfigDataAsset, DBDGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ADBDSurvivorBase::LookInput);
 }
 
 void ADBDSurvivorBase::MoveInput(const FInputActionValue& InputValue)
@@ -92,8 +93,19 @@ void ADBDSurvivorBase::EndCrouchInput()
 
 void ADBDSurvivorBase::TryToMove(const float x, const float y)
 {
-	AddMovementInput(GetActorForwardVector(), y);
-	AddMovementInput(GetActorRightVector(), x);
+	const FRotator MovementRot(0.f, GetController()->GetControlRotation().Yaw, 0.f);
+
+	if (x != 0.f)
+	{
+		const FVector RightDir = MovementRot.RotateVector(FVector::RightVector);
+		AddMovementInput(RightDir, x);
+	}
+
+	if (y != 0.f)
+	{
+		const FVector ForwardDir = MovementRot.RotateVector(FVector::ForwardVector);
+		AddMovementInput(ForwardDir, y);
+	}
 }
 
 void ADBDSurvivorBase::TryToLook(const float x, const float y)
