@@ -2,13 +2,35 @@
 
 
 #include "Characters/DBDCharacterBase.h"
+#include "AbilitySystem/DBDAbilitySystemComponent.h"
+#include "AbilitySystem/DBDAttributeSet.h"
 
 
 ADBDCharacterBase::ADBDCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	AbilitySystemComp = CreateDefaultSubobject<UDBDAbilitySystemComponent>("Ability System Comp");
+
+	Attributes = CreateDefaultSubobject<UDBDAttributeSet>("Attributes");
 }
+
+UAbilitySystemComponent* ADBDCharacterBase::GetAbilitySystemComponent() const
+{
+	return GetAbilitySystemComp();
+}
+
+//~ Begin APawn Interface
+void ADBDCharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComp)
+	{
+		AbilitySystemComp->InitAbilityActorInfo(this, this);
+	}
+}
+//~ End APawn Interface
 
 
 void ADBDCharacterBase::BeginPlay()

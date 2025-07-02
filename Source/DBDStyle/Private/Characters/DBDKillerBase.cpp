@@ -4,11 +4,13 @@
 #include "Characters/DBDKillerBase.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "AbilitySystem/DBDAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/Input/DBDInputComponent.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "InputActionValue.h"
 #include "DBDGameplayTags.h"
+#include "DrawDebugHelpers.h"
 
 
 ADBDKillerBase::ADBDKillerBase()
@@ -43,6 +45,21 @@ ADBDKillerBase::ADBDKillerBase()
 	KillerAuraLight = CreateDefaultSubobject<USpotLightComponent>("Killer Aura Light");
 	KillerAuraLight->SetupAttachment(GetRootComponent());
 }
+
+//~ Begin APawn Interface
+void ADBDKillerBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComp && Attributes)
+	{
+		const FString ASCText = FString::Printf(TEXT("Owner Actor: %s, Avatar Actor: %s"),
+			*AbilitySystemComp->GetOwner()->GetActorLabel(), *AbilitySystemComp->GetAvatarActor()->GetActorLabel());
+		GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Red, ASCText);
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "AttributeSet Valid!");
+	}
+}
+//~ End APawn Interface
 
 void ADBDKillerBase::BeginPlay()
 {

@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystem/DBDAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/Input/DBDInputComponent.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
@@ -35,6 +36,21 @@ ADBDSurvivorBase::ADBDSurvivorBase()
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
+
+//~ Begin APawn Interface
+void ADBDSurvivorBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComp && Attributes)
+	{
+		const FString ASCText = FString::Printf(TEXT("Owner Actor: %s, Avatar Actor: %s"),
+			*AbilitySystemComp->GetOwner()->GetActorLabel(), *AbilitySystemComp->GetAvatarActor()->GetActorLabel());
+		GEngine->AddOnScreenDebugMessage(0, 5.f, FColor::Blue, ASCText);
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Blue, "AttributeSet Valid!");
+	}
+}
+//~ End APawn Interface
 
 void ADBDSurvivorBase::BeginPlay()
 {

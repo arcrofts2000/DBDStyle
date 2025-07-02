@@ -66,6 +66,10 @@ public:
 
 
 protected:
+	//~ Begin APawn Interface
+	virtual void PossessedBy(AController* NewController) override;
+	//~ End APawn Interface
+
 	virtual void BeginPlay() override;
 
 public:	
