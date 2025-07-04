@@ -8,6 +8,7 @@
 #include "DBDCharacterBase.generated.h"
 
 class UDataAsset_InputConfig;
+class UDataAsset_StartupDataBase;
 class UDBDAbilitySystemComponent;
 class UDBDAttributeSet;
 
@@ -34,6 +35,9 @@ protected:
 	/** Input Actions and IMC **/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UDataAsset_InputConfig> InputConfigDataAsset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Data")
+	TSoftObjectPtr<UDataAsset_StartupDataBase> StartupData;
 
 
 	/** AbilitySystem **/

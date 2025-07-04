@@ -22,12 +22,12 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UBoxComponent> WeaponCollision;
+	TObjectPtr<UBoxComponent> ItemCollision;
 
 
 public:
 	/** Blueprint Getters **/
-	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Weapon Collision"))
-	FORCEINLINE UBoxComponent* GetWeaponCollision() const { return WeaponCollision; }
+	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Item Collision"))
+	FORCEINLINE UBoxComponent* GetItemCollision() const { return ItemCollision; }
 	
 };
