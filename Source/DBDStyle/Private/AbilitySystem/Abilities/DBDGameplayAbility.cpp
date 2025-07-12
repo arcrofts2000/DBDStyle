@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/DBDGameplayAbility.h"
 #include "AbilitySystem/DBDAbilitySystemComponent.h"
+#include "Characters/DBDKillerBase.h"
+#include "Characters/DBDSurvivorBase.h"
 
 //~ Begin UGameplayAbility Interface
 void UDBDGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -32,3 +34,48 @@ void UDBDGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, co
 	}
 }
 //~ End UGameplayAbility Interface
+
+USkeletalMeshComponent* UDBDGameplayAbility::GetKillerFirstPersonMesh() const
+{
+	if (ADBDKillerBase* OwningCharacter = Cast<ADBDKillerBase>(CurrentActorInfo->OwnerActor.Get()))
+	{
+		return OwningCharacter->GetFirstPersonMesh();
+	}
+
+	return nullptr;
+}
+
+USkeletalMeshComponent* UDBDGameplayAbility::GetActorThirdPersonMesh() const
+{
+	if (ADBDCharacterBase* OwningCharacter = Cast<ADBDCharacterBase>(CurrentActorInfo->OwnerActor.Get()))
+	{
+		return OwningCharacter->GetMesh();
+	}
+
+	return nullptr;
+}
+
+UCameraComponent* UDBDGameplayAbility::GetKillerCam() const
+{
+	if (ADBDKillerBase* OwningCharacter = Cast<ADBDKillerBase>(CurrentActorInfo->OwnerActor.Get()))
+	{
+		return OwningCharacter->GetFirstPersonCamera();
+	}
+
+	return nullptr;
+}
+
+UCameraComponent* UDBDGameplayAbility::GetSurvivorCam() const
+{
+	if (ADBDSurvivorBase* OwningCharacter = Cast<ADBDSurvivorBase>(CurrentActorInfo->OwnerActor.Get()))
+	{
+		return OwningCharacter->GetThirdPersonCamera();
+	}
+
+	return nullptr;
+}
+
+bool UDBDGameplayAbility::IsKiller() const
+{
+	return Cast<ADBDKillerBase>(CurrentActorInfo->OwnerActor.Get()) ? true : false;
+}

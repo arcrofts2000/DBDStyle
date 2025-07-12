@@ -4,6 +4,7 @@
 #include "Characters/DBDCharacterBase.h"
 #include "AbilitySystem/DBDAbilitySystemComponent.h"
 #include "AbilitySystem/DBDAttributeSet.h"
+#include "DataAssets/Startup/DataAsset_StartupDataBase.h"
 
 
 ADBDCharacterBase::ADBDCharacterBase()
@@ -28,6 +29,14 @@ void ADBDCharacterBase::PossessedBy(AController* NewController)
 	if (AbilitySystemComp)
 	{
 		AbilitySystemComp->InitAbilityActorInfo(this, this);
+	}
+
+	ensureMsgf(!StartupData.IsNull(), TEXT("Forgot to assign Startup Data to %s"), *GetName());
+
+	if (!StartupData.IsNull())
+	{
+		if (UDataAsset_StartupDataBase* LoadedData = StartupData.LoadSynchronous())
+			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComp);
 	}
 }
 //~ End APawn Interface

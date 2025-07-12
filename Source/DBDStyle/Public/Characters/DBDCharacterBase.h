@@ -48,13 +48,21 @@ protected:
 	TObjectPtr<UDBDAttributeSet> Attributes;
 
 
+
+public:
+	FORCEINLINE UDBDAbilitySystemComponent* GetAbilitySystemComp() const { return AbilitySystemComp; }
+	FORCEINLINE UDBDAttributeSet* GetAttributes() const { return Attributes; }
+
+
+
+
 public:
 	/** Ability System Getters **/
-	UFUNCTION(BlueprintPure, Category = "Getters")
-	FORCEINLINE UDBDAbilitySystemComponent* GetAbilitySystemComp() const { return AbilitySystemComp; }
+	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get DBD Ability System Component"))
+	FORCEINLINE UDBDAbilitySystemComponent* K2_GetAbilitySystemComp() const { return GetAbilitySystemComp(); }
 
-	UFUNCTION(BlueprintPure, Category = "Getters")
-	FORCEINLINE UDBDAttributeSet* GetAttributes() const { return Attributes; }
+	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Attributes"))
+	FORCEINLINE UDBDAttributeSet* K2_GetAttributes() const { return GetAttributes(); }
 
 
 

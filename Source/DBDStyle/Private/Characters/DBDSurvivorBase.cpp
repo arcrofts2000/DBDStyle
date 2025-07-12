@@ -4,6 +4,7 @@
 #include "Characters/DBDSurvivorBase.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/Combat/SurvivorItemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystem/DBDAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -30,6 +31,8 @@ ADBDSurvivorBase::ADBDSurvivorBase()
 	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>("Third Person Camera");
 	ThirdPersonCamera->SetupAttachment(SpringArmComp);
 	ThirdPersonCamera->bUsePawnControlRotation = false;
+
+	SurvivorItemComp = CreateDefaultSubobject <USurvivorItemComponent>("Survivor Item Component");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);

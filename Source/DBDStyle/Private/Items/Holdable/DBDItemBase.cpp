@@ -8,12 +8,12 @@ ADBDItemBase::ADBDItemBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	ItemStaticMesh = CreateDefaultSubobject<UStaticMeshComponent>("Item Static Mesh");
-	ItemStaticMesh->SetupAttachment(GetRootComponent());
-	ItemStaticMesh->SetCollisionProfileName("No Collision");
+	FirstPersonItemMesh = CreateDefaultSubobject<USkeletalMeshComponent>("First Person Item Mesh");
+	SetRootComponent(FirstPersonItemMesh);
+	FirstPersonItemMesh->SetCollisionProfileName("No Collision");
 
-	ItemSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Item Skeletal Mesh");
-	ItemSkeletalMesh->SetupAttachment(GetRootComponent());
-	ItemSkeletalMesh->SetCollisionProfileName("No Collision");
+	ThirdPersonItemMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Third Person Item Mesh");
+	ThirdPersonItemMesh->SetupAttachment(GetRootComponent());
+	ThirdPersonItemMesh->SetCollisionProfileName("No Collision");
 
 }

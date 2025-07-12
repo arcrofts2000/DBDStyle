@@ -4,6 +4,7 @@
 #include "Characters/DBDKillerBase.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/Combat/KillerCombatComponent.h"
 #include "AbilitySystem/DBDAbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/Input/DBDInputComponent.h"
@@ -44,6 +45,8 @@ ADBDKillerBase::ADBDKillerBase()
 
 	KillerAuraLight = CreateDefaultSubobject<USpotLightComponent>("Killer Aura Light");
 	KillerAuraLight->SetupAttachment(GetRootComponent());
+
+	KillerCombatComp = CreateDefaultSubobject<UKillerCombatComponent>("Killer Combat Component");
 }
 
 //~ Begin APawn Interface

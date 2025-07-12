@@ -16,18 +16,22 @@ public:
 
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UStaticMeshComponent> ItemStaticMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> ItemSkeletalMesh;
+	TObjectPtr<USkeletalMeshComponent> FirstPersonItemMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> ThirdPersonItemMesh;
+
+	FORCEINLINE USkeletalMeshComponent* GetThirdPersonItemMesh() const { return ThirdPersonItemMesh; }
+	FORCEINLINE USkeletalMeshComponent* GetFirstPersonItemMesh() const { return FirstPersonItemMesh; }
 
 
 public:
 	/** Blueprint Getters **/
-	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Item (StaticMesh)"))
-	FORCEINLINE UStaticMeshComponent* GetItemStaticMesh() const { return ItemStaticMesh; }
+	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get First Person Item Mesh"))
+	FORCEINLINE USkeletalMeshComponent* K2_GetThirdPersonItemMesh() const { return GetThirdPersonItemMesh(); }
 
-	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Item (SkeletalMesh)"))
-	FORCEINLINE USkeletalMeshComponent* GetItemSkeletalMesh() const { return ItemSkeletalMesh; }
+	UFUNCTION(BlueprintPure, Category = "Getters", meta = (DisplayName = "Get Third Person Item Mesh"))
+	FORCEINLINE USkeletalMeshComponent* K2_GetFirstPersonItemMesh() const { return GetFirstPersonItemMesh(); }
 };

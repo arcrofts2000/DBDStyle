@@ -11,6 +11,7 @@ class USpotLightComponent;
 class UInputMappingContext;
 class UInputAction;
 class UDataAsset_InputConfig;
+class UKillerCombatComponent;
 struct FInputActionValue;
 
 UCLASS()
@@ -33,21 +34,34 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USpotLightComponent> KillerAuraLight;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UKillerCombatComponent> KillerCombatComp;
+
 
 	/** Input Functions **/
 	void MoveInput(const FInputActionValue& InputValue);
 	void LookInput(const FInputActionValue& InputValue);
 	void PrimaryAttackInput();
 	void SecondaryAttackInput();
+
+
+
+public:
+	FORCEINLINE USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
+	FORCEINLINE UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCamera; }
+	FORCEINLINE UKillerCombatComponent* GetKillerCombatComponent() const { return KillerCombatComp; }
 		
 
 public:
 	/** Blueprint Getters **/
 	UFUNCTION(BlueprintPure, Category = "Killer|Getter", meta = (DisplayName = "Get First Person Mesh"))
-	FORCEINLINE USkeletalMeshComponent* GetFirstPersonMesh() { return FirstPersonMesh; }
+	FORCEINLINE USkeletalMeshComponent* K2_GetFirstPersonMesh() const { return GetFirstPersonMesh(); }
 	
 	UFUNCTION(BlueprintPure, Category = "Killer|Getter", meta = (DisplayName = "Get First Person Camera"))
-	FORCEINLINE UCameraComponent* GetFirstPersonCamera() { return FirstPersonCamera; }
+	FORCEINLINE UCameraComponent* K2_GetFirstPersonCamera() const { return GetFirstPersonCamera(); }
+
+	UFUNCTION(BlueprintPure, Category = "Killer|Getter", meta = (DisplayName = "Get Killer Combat Component"))
+	FORCEINLINE UKillerCombatComponent* K2_GetKillerCombatComponent() const { return GetKillerCombatComponent(); }
 
 
 	/** BlueprintCallable Input Functions **/

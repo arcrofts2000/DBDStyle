@@ -13,6 +13,10 @@ enum class EDBDAbilityActivationPolicy : uint8
 	OnGiven
 };
 
+
+class USkeletalMeshComponent;
+class UCameraComponent;
+
 /**
  * 
  */
@@ -31,4 +35,30 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ability")
 	EDBDAbilityActivationPolicy ActivationPolicy = EDBDAbilityActivationPolicy::OnTriggered;
+
+	USkeletalMeshComponent* GetKillerFirstPersonMesh() const;
+	USkeletalMeshComponent* GetActorThirdPersonMesh() const;
+
+	UCameraComponent* GetKillerCam() const;
+	UCameraComponent* GetSurvivorCam() const;
+
+	bool IsKiller() const;
+
+
+public:
+	/** Blueprint Pure Functions **/
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get First Person Mesh"))
+	USkeletalMeshComponent* K2_GetKillerFirstPersonMesh() const { return GetKillerFirstPersonMesh(); }
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Third Person Mesh"))
+	USkeletalMeshComponent* K2_GetActorThirdPersonMesh() const { return GetActorThirdPersonMesh(); }
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Killer Camera"))
+	UCameraComponent* K2_GetKillerCam() const { return GetKillerCam(); }
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Survivor Camera"))
+	UCameraComponent* K2_GetSurvivorCam() const { return GetSurvivorCam(); }
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Killer?"))
+	bool K2_IsKiller() const { return IsKiller(); }
 };

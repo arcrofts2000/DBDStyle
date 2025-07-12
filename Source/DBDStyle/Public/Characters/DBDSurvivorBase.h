@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class USurvivorItemComponent;
 class UInputMappingContext;
 class UInputAction;
 class UDataAsset_InputConfig;
@@ -30,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USurvivorItemComponent> SurvivorItemComp;
+
 
 	/** Input Functions **/
 	void MoveInput(const FInputActionValue& InputValue);
@@ -38,10 +42,22 @@ protected:
 	void EndCrouchInput();
 
 
+
+public:
+	FORCEINLINE UCameraComponent* GetThirdPersonCamera() const { return ThirdPersonCamera; }
+	FORCEINLINE USurvivorItemComponent* GetSurvivorItemComponent() const { return SurvivorItemComp; }
+
+
+
 public:
 	/** Blueprint Getters **/
 	UFUNCTION(BlueprintPure, Category = "Survivor|Getter", meta = (DisplayName = "Get Third Person Camera"))
-	FORCEINLINE UCameraComponent* GetThirdPersonCamera() { return ThirdPersonCamera; }
+	FORCEINLINE UCameraComponent* K2_GetThirdPersonCamera() const { return GetThirdPersonCamera(); }
+
+	UFUNCTION(BlueprintPure, Category = "Survivor|Getter", meta = (DisplayName = "Get Survivor Item Component"))
+	FORCEINLINE USurvivorItemComponent* K2_GetSurvivorItemComponent() const { return GetSurvivorItemComponent(); }
+
+
 
 	/** BlueprintCallable Input Functions **/
 	UFUNCTION(BlueprintCallable, Category = "Survivor|Input", meta = (DisplayName = "Try To Move"))
